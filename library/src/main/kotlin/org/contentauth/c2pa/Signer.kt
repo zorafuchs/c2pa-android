@@ -19,7 +19,11 @@ interface SignCallback {
     fun sign(data: ByteArray): ByteArray
 }
 
-/** C2PA Signer for signing manifests */
+/**
+ * C2PA Signer for signing manifests.
+ *
+ * Signer implements [Closeable]; calling a method after `close()` throws [IllegalStateException].
+ */
 class Signer internal constructor(internal var ptr: Long) : Closeable {
 
     companion object {
@@ -72,10 +76,10 @@ class Signer internal constructor(internal var ptr: Long) : Closeable {
         fun fromInfo(info: SignerInfo): Signer = executeC2PAOperation("Failed to create signer") {
             val handle =
                 nativeFromInfo(
-                    info.algorithm.description,
-                    info.certificatePEM,
-                    info.privateKeyPEM,
-                    info.tsaURL,
+                    info.algorithm.description.toNativeUtf8(),
+                    info.certificatePEM.toNativeUtf8(),
+                    info.privateKeyPEM.toNativeUtf8(),
+                    info.tsaURL?.toNativeUtf8(),
                 )
             if (handle == 0L) null else Signer(handle)
         }
@@ -251,9 +255,9 @@ class Signer internal constructor(internal var ptr: Long) : Closeable {
                 }
             val handle =
                 nativeFromCallback(
-                    algorithm.description,
-                    certificateChainPEM,
-                    tsaURL,
+                    algorithm.description.toNativeUtf8(),
+                    certificateChainPEM.toNativeUtf8(),
+                    tsaURL?.toNativeUtf8(),
                     callback,
                 )
             if (handle == 0L) null else Signer(handle)
@@ -326,8 +330,8 @@ class Signer internal constructor(internal var ptr: Long) : Closeable {
                     nativeCombineCawg(
                         c2pa.ptr,
                         identity.ptr,
-                        referencedAssertions.toTypedArray(),
-                        roles.toTypedArray(),
+                        referencedAssertions.map { it.toNativeUtf8() }.toTypedArray(),
+                        roles.map { it.toNativeUtf8() }.toTypedArray(),
                     )
                 c2pa.ptr = 0L
                 identity.ptr = 0L
@@ -337,17 +341,17 @@ class Signer internal constructor(internal var ptr: Long) : Closeable {
 
         @JvmStatic
         private external fun nativeFromInfo(
-            algorithm: String,
-            certificatePEM: String,
-            privateKeyPEM: String,
-            tsaURL: String?,
+            algorithm: ByteArray,
+            certificatePEM: ByteArray,
+            privateKeyPEM: ByteArray,
+            tsaURL: ByteArray?,
         ): Long
 
         @JvmStatic
         private external fun nativeFromCallback(
-            algorithm: String,
-            certificateChain: String,
-            tsaURL: String?,
+            algorithm: ByteArray,
+            certificateChain: ByteArray,
+            tsaURL: ByteArray?,
             callback: SignCallback,
         ): Long
 
@@ -358,8 +362,8 @@ class Signer internal constructor(internal var ptr: Long) : Closeable {
         private external fun nativeCombineCawg(
             c2paHandle: Long,
             identityHandle: Long,
-            referencedAssertions: Array<String>,
-            roles: Array<String>,
+            referencedAssertions: Array<ByteArray>,
+            roles: Array<ByteArray>,
         ): Long
     }
 
