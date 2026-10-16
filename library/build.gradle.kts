@@ -279,7 +279,7 @@ tasks.register("downloadNativeLibraries") {
         // release-mode run after a local one invalidate too, since the literal never
         // equals a version string.
         val versionStamp = downloadDir.resolve("c2pa-version.txt")
-        val stamp = if (archiveDir != null) "local-archives" else $repo@$version
+        val stamp = if (archiveDir != null) "local-archives" else "$repo@$version"
         if (archiveDir != null || versionStamp.takeIf { it.exists() }?.readText()?.trim() != stamp) {
             println("C2PA archive source changed, removing previously downloaded libraries")
             archMap.keys.forEach { arch ->
