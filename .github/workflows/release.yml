@@ -120,7 +120,7 @@ jobs:
 
           // In build.gradle
           dependencies {
-              implementation 'com.github.contentauth:c2pa-android:${{ github.event.inputs.version }}'
+              implementation 'com.github.${{ github.repository_owner }}:c2pa-android:${{ github.event.inputs.version }}'
           }
           ```
 
