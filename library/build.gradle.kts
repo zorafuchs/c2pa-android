@@ -217,6 +217,7 @@ publishing {
 
 // Native library download configuration
 val c2paVersion = project.properties["c2paVersion"] as String
+val c2paRepo = project.properties["c2paRepo"] as String? ?: "contentauth/c2pa-rs"
 
 // Optional. When set to a directory holding c2pa-<version>-<triple>.zip archives,
 // downloadNativeLibraries takes the native libraries from there instead of downloading
@@ -255,6 +256,7 @@ tasks.register("downloadNativeLibraries") {
     val destHeader = projectDir.file("src/main/jni/c2pa.h")
     val archMap = architectures.toMap()
     val version = c2paVersion
+    val repo = c2paRepo
     val archiveDir = c2paArchiveDir
 
     doLast {
@@ -277,7 +279,7 @@ tasks.register("downloadNativeLibraries") {
         // release-mode run after a local one invalidate too, since the literal never
         // equals a version string.
         val versionStamp = downloadDir.resolve("c2pa-version.txt")
-        val stamp = if (archiveDir != null) "local-archives" else version
+        val stamp = if (archiveDir != null) "local-archives" else $repo@$version
         if (archiveDir != null || versionStamp.takeIf { it.exists() }?.readText()?.trim() != stamp) {
             println("C2PA archive source changed, removing previously downloaded libraries")
             archMap.keys.forEach { arch ->
@@ -323,7 +325,7 @@ tasks.register("downloadNativeLibraries") {
                         // tag in this URL needs the rc-specific prefix.
                         val tagPrefix = if (version.contains("-rc.")) "c2pa-rc-" else "c2pa-"
                         val url =
-                            "https://github.com/contentauth/c2pa-rs/releases/download/$tagPrefix$version/c2pa-$version-$target.zip"
+                            "https://github.com/$repo/c2pa-rs/releases/download/$tagPrefix$version/c2pa-$version-$target.zip"
                         println("Downloading from: $url")
                         if (!downloaded.exists()) {
                             val connection = URI(url).toURL().openConnection() as HttpURLConnection
