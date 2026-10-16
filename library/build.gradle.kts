@@ -325,7 +325,7 @@ tasks.register("downloadNativeLibraries") {
                         // tag in this URL needs the rc-specific prefix.
                         val tagPrefix = if (version.contains("-rc.")) "c2pa-rc-" else "c2pa-"
                         val url =
-                            "https://github.com/$repo/c2pa-rs/releases/download/$tagPrefix$version/c2pa-$version-$target.zip"
+                            "https://github.com/$repo/releases/download/$tagPrefix$version/c2pa-$version-$target.zip"
                         println("Downloading from: $url")
                         if (!downloaded.exists()) {
                             val connection = URI(url).toURL().openConnection() as HttpURLConnection
