@@ -2088,6 +2088,9 @@ JNIEXPORT jlong JNICALL Java_org_contentauth_c2pa_Signer_nativeFromCallback(JNIE
     else if (strcmp(calg, "ps384") == 0) alg = Ps384;
     else if (strcmp(calg, "ps512") == 0) alg = Ps512;
     else if (strcmp(calg, "ed25519") == 0) alg = Ed25519;
+    else if (strcmp(calg, "mldsa44") == 0) alg = MlDsa44;
+    else if (strcmp(calg, "mldsa65") == 0) alg = MlDsa65;
+    else if (strcmp(calg, "mldsa87") == 0) alg = MlDsa87;
     else {
         release_cstring(calg);
         throw_checked(env, "java/lang/IllegalArgumentException", "Unknown signing algorithm");

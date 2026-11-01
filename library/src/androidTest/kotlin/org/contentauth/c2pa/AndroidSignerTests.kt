@@ -60,7 +60,7 @@ class AndroidSignerTests : SignerTests() {
     @Test
     fun runTestSigningAlgorithms() = runBlocking {
         val result = testSigningAlgorithms()
-        assertTrue(result.success, "Signing Algorithms test failed: ${result.message}")
+        assertTrue(result.success, "Signing Algorithms test failed: ${result.message}\n${result.details}")
     }
 
     @Test
