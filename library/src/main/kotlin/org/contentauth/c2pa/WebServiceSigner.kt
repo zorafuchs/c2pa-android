@@ -72,6 +72,9 @@ class WebServiceSigner(
         "ps384" -> SigningAlgorithm.PS384
         "ps512" -> SigningAlgorithm.PS512
         "ed25519" -> SigningAlgorithm.ED25519
+        "mldsa44" -> SigningAlgorithm.MLDSA44
+        "mldsa65" -> SigningAlgorithm.MLDSA65
+        "mldsa87" -> SigningAlgorithm.MLDSA87
         else -> throw SignerException.UnsupportedAlgorithm(algorithmString)
     }
 

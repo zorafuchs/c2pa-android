@@ -42,6 +42,15 @@ enum class SigningAlgorithm {
 
     @SerialName("ed25519")
     ED25519,
+
+    @SerialName("mldsa44")
+    MLDSA44,
+
+    @SerialName("mldsa65")
+    MLDSA65,
+
+    @SerialName("mldsa87")
+    MLDSA87,
     ;
 
     val cValue: Int

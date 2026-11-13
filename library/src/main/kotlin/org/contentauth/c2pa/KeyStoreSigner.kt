@@ -78,6 +78,10 @@ object KeyStoreSigner {
                 SigningAlgorithm.PS512 -> "SHA512withRSA/PSS"
                 SigningAlgorithm.ED25519 ->
                     throw C2PAError.Api("Ed25519 not supported by Android KeyStore")
+                SigningAlgorithm.MLDSA44,
+                SigningAlgorithm.MLDSA65,
+                SigningAlgorithm.MLDSA87 ->
+                    throw C2PAError.Api("ML-DSA not supported by Android KeyStore on this API level")
             }
 
         return Signer.withCallback(

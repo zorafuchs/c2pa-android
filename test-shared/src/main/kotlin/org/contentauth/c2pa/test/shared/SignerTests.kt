@@ -456,6 +456,9 @@ abstract class SignerTests : TestBase() {
                     SigningAlgorithm.PS256,
                     SigningAlgorithm.PS384,
                     SigningAlgorithm.PS512,
+                    SigningAlgorithm.MLDSA44,
+                    SigningAlgorithm.MLDSA65,
+                    SigningAlgorithm.MLDSA87,
                     -> supportedAlgorithms.add(alg)
                     SigningAlgorithm.ED25519 -> supportedAlgorithms.add(alg)
                 }
